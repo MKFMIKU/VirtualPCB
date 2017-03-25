@@ -12,3 +12,7 @@
     -fx-font-size: 24px;
     -fx-font-weight: bolder;
 }
+
+#nowText{
+    -fx-font-size: 16px;
+}

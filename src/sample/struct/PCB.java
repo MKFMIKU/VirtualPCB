@@ -69,6 +69,10 @@ public class PCB implements Comparable<PCB>{
         return atime;
     }
 
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
     public int getRtime() {
         return rtime;
     }
@@ -102,47 +106,4 @@ public class PCB implements Comparable<PCB>{
         return this.rate>o.getRate()?this.rate:o.getRate();
     }
 
-    public PCB merge_sort(PCB head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-        PCB middle = getMiddle(head); // get the middle of the list
-        PCB sHalf = middle.next;
-        middle.next = null; // split the list into two halfs
-
-        return merge(merge_sort(head), merge_sort(sHalf)); // recurse on that
-    }
-
-    // Merge subroutine to merge two sorted lists
-    public PCB merge(PCB a, PCB b) {
-        PCB dummyHead, curr;
-        dummyHead = new PCB();
-        curr = dummyHead;
-        while (a != null && b != null) {
-            if (a.getRate() <= b.getRate()) {
-                curr.next = a;
-                a = a.next;
-            } else {
-                curr.next = b;
-                b = b.next;
-            }
-            curr = curr.next;
-        }
-        curr.next = (a == null) ? b : a;
-        return dummyHead.next;
-    }
-
-    // Finding the middle element of the list for splitting
-    public PCB getMiddle(PCB head) {
-        if (head == null) {
-            return head;
-        }
-        PCB slow, fast;
-        slow = fast = head;
-        while (fast.next != null && fast.next.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-        return slow;
-    }
 }

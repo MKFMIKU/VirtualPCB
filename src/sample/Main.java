@@ -61,11 +61,22 @@ public class Main extends Application {
                     Integer.parseInt(textRate.getText()),
                     Integer.parseInt(textTime.getText()),
                     timer.getTime());
-            if(proccess==null) proccess=pcb;
-            else pcb.setNext(proccess);
-            proccess = pcb;
 
-            proccess = proccess.merge_sort(proccess);
+            PCB head = proccess.getNext();
+            PCB prev = proccess;
+                while (head!=null){
+                    if(head.getRate()>pcb.getRate()){
+                        prev.setNext(pcb);
+                        pcb.setNext(head);
+                        break;
+                    }
+                    head=head.getNext();
+                    prev=prev.getNext();
+                }
+                if(head==null){
+                    prev.setNext(pcb);
+                    pcb.setNext(null);
+                }
 
             proccess.show();
 
@@ -77,7 +88,8 @@ public class Main extends Application {
     }
 
     public void init(){
-        proccess = null;
+        proccess = new PCB();
+        proccess.setRate(-1);
 
         timeText = new Text("0");
         timeText.setFill(Color.WHITE);
@@ -109,7 +121,7 @@ public class Main extends Application {
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         graphicsContext.clearRect(0,0,360,60);
         if(proccess!=null){
-            PCB h = proccess;
+            PCB h = proccess.getNext();
             int i=0;
             while (h!=null){
                 graphicsContext.save();
@@ -152,13 +164,13 @@ public class Main extends Application {
                 time+=1;
                 Platform.runLater(()->{
                     timeText.setText(String.valueOf(time));
-                    if(proccess!=null){
-                        if(proccess.runOver()){
+                    if(proccess.getNext()!=null){
+                        if(proccess.getNext().runOver()){
                             proccess = proccess.getNext();
                         }else{
-                            proccess.setRtime();
+                            nowText.setText(proccess.getNext().getName());
+                            proccess.getNext().setRtime();
                         }
-                        nowText.setText(proccess.getName());
                         draw();
                     }
                 });
